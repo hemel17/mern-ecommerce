@@ -1,10 +1,11 @@
 import { Router } from "express";
 import mongoose from "mongoose";
+import authRoutes from "./auth.js";
 
-/**
- * Express router for basic server routes
- */
 const router = Router();
+
+// Mount auth routes
+router.use("/api/auth", authRoutes);
 
 /**
  * Root endpoint
