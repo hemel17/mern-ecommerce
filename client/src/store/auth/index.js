@@ -34,9 +34,7 @@ export const login = createAsyncThunk(
       });
       return data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Login failed"
-      );
+      return rejectWithValue(error.response?.data?.message || "Login failed");
     }
   }
 );
@@ -48,9 +46,7 @@ export const logout = createAsyncThunk(
       const { data } = await axios.get("/auth/logout");
       return data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Logout failed"
-      );
+      return rejectWithValue(error.response?.data?.message || "Logout failed");
     }
   }
 );
