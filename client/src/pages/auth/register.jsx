@@ -1,5 +1,140 @@
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Mail, Lock, User } from "lucide-react";
+import { Link } from "react-router";
+
+// 🛡️ Validation schema
+const registerSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .min(3, "Name must be at least 3 characters"),
+  email: z.string().min(1, "Email is required").email("Invalid email"),
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
+});
+
 const Register = () => {
-  return <div>Register</div>;
+  const form = useForm({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    console.log("Registering:", data);
+    // TODO: Send data to your API
+  };
+
+  return (
+    <section className="flex items-center justify-center">
+      <Card className="w-full max-w-md shadow-xl">
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Name Field */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                        <Input
+                          {...field}
+                          placeholder="John Doe"
+                          className="pl-10 focus-visible:outline-none focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Email Field */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                        <Input
+                          {...field}
+                          type="email"
+                          placeholder="you@example.com"
+                          className="pl-10 focus-visible:outline-none focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Password Field */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder="••••••••"
+                          className="pl-10 focus-visible:outline-none focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="w-full cursor-pointer bg-blue-500 hover:bg-blue-500"
+              >
+                Register
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter className="text-sm text-center text-gray-500">
+          Already have an account?
+          <Link to="/login" className="text-blue-600 hover:underline ml-1">
+            Login here.
+          </Link>
+        </CardFooter>
+      </Card>
+    </section>
+  );
 };
 
 export default Register;

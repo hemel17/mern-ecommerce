@@ -3,13 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -28,7 +22,7 @@ const loginSchema = z.object({
     .email({ message: "Invalid email address" }),
   password: z
     .string()
-    .min(1, "Passowrd is required")
+    .min(1, "Password is required")
     .min(6, "Password must be at least 6 characters"),
 });
 
@@ -48,11 +42,12 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <section className="flex items-center justify-center">
       <Card className="w-full max-w-md shadow-xl">
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Email Field */}
               <FormField
                 control={form.control}
                 name="email"
@@ -75,6 +70,7 @@ const Login = () => {
                 )}
               />
 
+              {/* Password Field */}
               <FormField
                 control={form.control}
                 name="password"
@@ -107,14 +103,14 @@ const Login = () => {
           </Form>
         </CardContent>
 
-        <CardFooter>
-          Don't have an account?{" "}
-          <Link to="/register" className="ml-1 text-blue-600">
+        <CardFooter className="text-sm text-center text-gray-500">
+          Don't have an account?
+          <Link to="/register" className="text-blue-600 ml-1 hover:underline">
             Register here.
           </Link>
         </CardFooter>
       </Card>
-    </div>
+    </section>
   );
 };
 
