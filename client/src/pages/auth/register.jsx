@@ -13,7 +13,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Mail, Lock, User } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { register, clearError } from "@/store/auth";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 // 🛡️ Validation schema
 const registerSchema = z.object({
@@ -29,6 +33,12 @@ const registerSchema = z.object({
 });
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, loading, error } = useSelector(
+    (state) => state.auth
+  );
+
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -38,9 +48,37 @@ const Register = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("Registering:", data);
-    // TODO: Send data to your API
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      }),
+        dispatch(clearError());
+    }
+  }, [error, dispatch]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.success("Registration successful!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  }, [isAuthenticated]);
+
+  const onSubmit = ({ name, email, password }) => {
+    dispatch(register({ name, email, password }));
   };
 
   return (
@@ -120,8 +158,9 @@ const Register = () => {
               <Button
                 type="submit"
                 className="w-full cursor-pointer bg-blue-500 hover:bg-blue-500"
+                disabled={loading}
               >
-                Register
+                {loading ? "Registering..." : "Register"}
               </Button>
             </form>
           </Form>

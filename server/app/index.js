@@ -8,7 +8,7 @@ import { notFoundHandler, errorHandler } from "./error.js";
 const app = express();
 
 // * middlewares
-app.use(middleware);
+middleware.forEach((mw) => app.use(mw));
 
 // * routes
 app.use(routes);

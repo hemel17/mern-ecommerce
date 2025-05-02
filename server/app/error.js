@@ -31,6 +31,14 @@ export const errorHandler = (err, _req, res, _next) => {
     errorMessage = `Invalid ${err.path}`;
   }
 
+  // Handle Mongoose validation errors
+  if (err.name === "ValidationError") {
+    errorStatus = 400;
+    errorMessage = Object.values(err.errors)
+      .map((err) => err.message)
+      .join(". ");
+  }
+
   // Handle JWT verification errors
   if (err.name === "JsonWebTokenError") {
     errorStatus = 400;

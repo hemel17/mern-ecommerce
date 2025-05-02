@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Configure axios defaults
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = "http://localhost:4000/api";
 
 // Async thunks for authentication actions
 export const register = createAsyncThunk(
@@ -17,6 +17,7 @@ export const register = createAsyncThunk(
       });
       return data;
     } catch (error) {
+      console.log(error);
       return rejectWithValue(
         error.response?.data?.message || "Registration failed"
       );

@@ -14,7 +14,9 @@ const middleware = [
   // Cross-Origin Resource Sharing configuration
   cors({
     // Only allow requests from the specified frontend URL
-    origin: [process.env.FRONTEND_URL],
+    origin: process.env.FRONTEND_URL
+      ? [process.env.FRONTEND_URL, "http://localhost:5173"]
+      : ["http://localhost:5173"],
 
     // Allowed HTTP methods
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
