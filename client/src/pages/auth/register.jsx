@@ -21,7 +21,7 @@ const registerSchema = z.object({
     .string()
     .min(1, "Name is required")
     .min(3, "Name must be at least 3 characters"),
-  email: z.string().min(1, "Email is required").email("Invalid email"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   password: z
     .string()
     .min(1, "Password is required")

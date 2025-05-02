@@ -13,13 +13,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Mail, Lock } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { login, clearError } from "@/store/auth";
+import { toast } from "react-toastify";
 
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email({ message: "Invalid email address" }),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   password: z
     .string()
     .min(1, "Password is required")
@@ -27,6 +28,13 @@ const loginSchema = z.object({
 });
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { loading, error, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
+
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -35,10 +43,37 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("logging in with : ", data);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
-    // todo : login logic
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      dispatch(clearError());
+    }
+  }, [error, dispatch]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.success("Login successful!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  }, [isAuthenticated]);
+
+  const onSubmit = ({ email, password }) => {
+    dispatch(login({ email, password }));
   };
 
   return (
@@ -96,8 +131,9 @@ const Login = () => {
               <Button
                 type="submit"
                 className="w-full cursor-pointer bg-blue-500 hover:bg-blue-500"
+                disabled={loading}
               >
-                Login
+                {loading ? "Logging in..." : "Login"}
               </Button>
             </form>
           </Form>
