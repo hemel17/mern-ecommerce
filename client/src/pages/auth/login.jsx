@@ -12,10 +12,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { login, clearError } from "@/store/auth";
 import { toast } from "react-toastify";
 
@@ -30,6 +30,7 @@ const loginSchema = z.object({
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const { loading, error, isAuthenticated } = useSelector(
     (state) => state.auth
@@ -72,6 +73,11 @@ const Login = () => {
     }
   }, [isAuthenticated]);
 
+  /**
+   *
+   * @param {String} email
+   * @param {String} password
+   */
   const onSubmit = ({ email, password }) => {
     dispatch(login({ email, password }));
   };
@@ -117,10 +123,21 @@ const Login = () => {
                         <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                         <Input
                           {...field}
-                          type="password"
+                          type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
-                          className="pl-10 focus-visible:outline-none focus-visible:ring-0"
+                          className="pl-10 pr-10 focus-visible:outline-none focus-visible:ring-0"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
+                        </button>
                       </div>
                     </FormControl>
                     <FormMessage />

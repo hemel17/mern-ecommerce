@@ -12,11 +12,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { register, clearError } from "@/store/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 // 🛡️ Validation schema
@@ -35,6 +35,7 @@ const registerSchema = z.object({
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const { isAuthenticated, loading, error } = useSelector(
     (state) => state.auth
   );
@@ -144,10 +145,21 @@ const Register = () => {
                         <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                         <Input
                           {...field}
-                          type="password"
+                          type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
-                          className="pl-10 focus-visible:outline-none focus-visible:ring-0"
+                          className="pl-10 pr-10 focus-visible:outline-none focus-visible:ring-0"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
+                        </button>
                       </div>
                     </FormControl>
                     <FormMessage />
