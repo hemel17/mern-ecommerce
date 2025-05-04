@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import { LogOut, Menu } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { logout } from "@/store/auth";
 
-const AdminHeader = ({ onMenuClick }) => {
+const AdminHeader = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,17 +16,7 @@ const AdminHeader = ({ onMenuClick }) => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={onMenuClick}
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-          <div className="font-semibold">Admin Dashboard</div>
-        </div>
+        <div className="font-semibold">Admin Dashboard</div>
         <Button variant="ghost" size="icon" onClick={handleLogout}>
           <LogOut className="h-5 w-5" />
         </Button>
