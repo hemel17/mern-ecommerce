@@ -3,6 +3,7 @@ import AuthLayout from "./components/auth/layout";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import AdminLayout from "./components/admin/layout";
+import Products from "./pages/admin/products.jsx";
 // import CheckAuth from "./common/check-auth";
 // import { useSelector } from "react-redux";
 
@@ -21,7 +22,12 @@ const App = () => {
         </Route>
 
         {/* admin routes */}
-        <Route path="/admin" element={<AdminLayout />}></Route>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="products" element={<Products />} />
+        </Route>
+
+        {/* for testing */}
+        <Route path="/test" element={<Products />} />
 
         {/* Add a route for unauthorized access */}
         <Route

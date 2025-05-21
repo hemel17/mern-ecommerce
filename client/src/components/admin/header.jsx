@@ -1,25 +1,41 @@
+import { Menu, LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
-import { logout } from "@/store/auth";
+import { logout } from "../../store/auth";
 
-const AdminHeader = () => {
+const AdminHeader = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await dispatch(logout());
-    navigate("/login");
+  const handleLogout = () => {
+    dispatch(logout());
+    console.log("Logout clicked");
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between">
-        <div className="font-semibold">Admin Dashboard</div>
-        <Button variant="ghost" size="icon" onClick={handleLogout}>
-          <LogOut className="h-5 w-5" />
-        </Button>
+    <header className="bg-white border-b border-gray-200 shadow-sm h-16 flex items-center px-4">
+      {/* Menu Button - Only visible on mobile */}
+      <button
+        onClick={toggleSidebar}
+        className="p-2 rounded-md text-gray-500 hover:text-indigo-600 hover:bg-gray-100 md:hidden"
+        aria-label="Toggle sidebar"
+      >
+        <Menu size={24} />
+      </button>
+
+      {/* Page Title - You can make this dynamic based on current route */}
+      <div className="flex-1 ml-4 md:ml-0">
+        <h1 className="text-xl font-semibold text-blue-500">Clothing</h1>
+      </div>
+
+      {/* Right side actions */}
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 px-3 py-2 rounded-md text-gray-700 hover:text-red-500 transition-colors cursor-pointer"
+          aria-label="Logout"
+        >
+          <LogOut size={20} />
+          <span className="hidden sm:inline">Logout</span>
+        </button>
       </div>
     </header>
   );

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import AdminHeader from "./header.jsx";
 import AdminSidebar from "./sidebar.jsx";
+import { Outlet } from "react-router";
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -58,7 +59,9 @@ const AdminLayout = ({ children }) => {
         <AdminHeader toggleSidebar={toggleSidebar} />
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          <Outlet />
+        </main>
       </div>
     </div>
   );
